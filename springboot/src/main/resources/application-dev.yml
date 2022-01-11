@@ -1,0 +1,27 @@
+server:
+  port: 9090
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/springboot-vue?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 738258
+    type: com.alibaba.druid.pool.DruidDataSource
+#  servlet:
+#    multipart:
+#      max-file-size: 100MB
+#      max-request-size: 100MB
+#
+#mybatis:
+#  type-aliases-package: com.lw.pojo
+#  mapper-locations: classpath:mapper/*.xml
+#
+#logging:
+#  file:
+#    name: log/log-dev.log
+#  level:
+#    root: info
+#    com.lw: debug
+
+
