@@ -22,6 +22,17 @@
       <el-table-column prop="price" label="价格" sortable=""/>
       <el-table-column prop="author" label="作者" sortable=""/>
       <el-table-column prop="createTime" label="出版时间" sortable=""/>
+      <el-table-column prop="cover" label="封面">
+        <template #default="scope">
+          <el-image
+              style="width: 100px; height: 100px"
+              :src="scope.row.cover"
+              :preview-src-list="[scope.row.cover]"
+          >
+          </el-image>
+        </template>
+      </el-table-column>
+
       <el-table-column label="操作">
         <template #default="scope">
           <el-button type="default" size="small" @click="handleEdit(scope.row)">编辑</el-button>
@@ -63,6 +74,15 @@
         </el-form-item>
         <el-form-item label="出版时间">
           <el-date-picker value-format="YYYY-MM-DD" type="date" v-model="form.createTime"  style="width: 80%" clearable></el-date-picker>
+        </el-form-item>
+        <el-form-item label="封面">
+          <el-upload
+              ref="upload"
+              action="http://localhost:9090/files/upload"
+              :on-success="filesUploadSuccess"
+          >
+            <el-button type="primary">点击上传</el-button>
+          </el-upload>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -106,10 +126,15 @@ export default {
 
   methods: {
 
+    filesUploadSuccess(res) {
+      console.log(res)
+      this.form.cover = res.data
+    },
     // 点击新增打开弹窗的方法
     add() {
       this.dialogVisible = true
       this.form = {}
+      this.$refs['upload'].clearFiles()  // 点击时清除上次上传的文件
     },
 
     // 弹窗中 确 定 按钮的保存方法
@@ -169,6 +194,9 @@ export default {
     handleEdit(row) {
       this.form = JSON.parse(JSON.stringify(row))  // 深拷贝
       this.dialogVisible = true
+      this.$nextTick(() => {  // 处理未来元素的方法，解决未来dom不存在的问题
+        this.$refs['upload'].clearFiles()  // 点击时清除上次上传的文件
+      })
     },
     handleDelete(id) {
       console.log(id)
