@@ -3,6 +3,9 @@ package com.lw.controller;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import com.lw.common.Result;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,7 @@ public class FileController {
     private String port;
 
     private static final String ip = "http://localhost";
+
     /**
      * 文件上传接口
      * @param file
@@ -49,6 +53,46 @@ public class FileController {
 
         // 返回结果url
         return Result.success(ip + ":" + port + "/files/" + flag);
+    }
+
+    /**
+     * 富文本编辑器wangEditor定制的文件上传接口
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    @CrossOrigin
+    @PostMapping("/editor/upload")
+    public JSON editorUpload(MultipartFile file) throws IOException {
+        // 获取源文件的名称
+        String originalFilename = file.getOriginalFilename();
+
+        // 定义文件的唯一标识(前缀)
+        // 1. hutool的RandomUtil
+        // 2. 时间戳System.currentTimeMillis()
+        // 3. hutool的IdUtil(UUID)
+        String flag = IdUtil.fastSimpleUUID();
+
+        // System.getProperty("user.dir")获取项目(springboot-vue-demo)所在的文件路径
+        // 拼接上传路径
+        String rootFilePath = System.getProperty("user.dir") + "/springboot/src/main/resources/files/" + flag + "_" + originalFilename;
+
+        // 文件写入到上传路径
+        FileUtil.writeBytes(file.getBytes(), rootFilePath);
+
+        // 返回结果url
+        String url = ip + ":" + port + "/files/" + flag;
+
+        // 定义富文本编辑器wangEditor返回的json数据格式
+        JSONObject json = new JSONObject();
+        json.set("errno", 0);
+
+        JSONArray arr = new JSONArray();
+        JSONObject data = new JSONObject();
+        arr.add(data);
+        data.set("url", url);
+        json.set("data", arr);
+        return json;
     }
 
     /**

@@ -8,20 +8,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
-@TableName("book")
+@TableName("news")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Book {
+public class News {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    private String name;
-    private BigDecimal price;
+    private String title;
+    private String content;
     private String author;
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date createTime;
-    private String cover;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date time;
 }

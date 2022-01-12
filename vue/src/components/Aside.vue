@@ -27,6 +27,13 @@
         </template>
       </el-menu-item>
 
+      <el-menu-item index="/news">
+        <el-icon><icon-menu /></el-icon>
+        <template #title>
+          <span>新闻管理</span>
+        </template>
+      </el-menu-item>
+
     </el-menu>
   </div>
 </template>
