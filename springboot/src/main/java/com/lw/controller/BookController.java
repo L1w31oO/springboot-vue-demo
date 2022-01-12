@@ -41,6 +41,16 @@ public class BookController {
         return Result.success(bookMapper.selectById(id));
     }
 
+    /**
+     * 注意：这个方法使用的是Mybatis sql方式做的多表联合查询
+     * @param userId
+     * @return
+     */
+    @GetMapping("/{userId}")
+    public Result<?> getByUserId(@PathVariable Integer userId) {
+        return Result.success(bookMapper.findByUserId(userId));
+    }
+
     @GetMapping("")
     public Result<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
                               @RequestParam(defaultValue = "10") Integer pageSize,

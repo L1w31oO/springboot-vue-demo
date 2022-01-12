@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%; height: 100vh; background-color: whitesmoke; overflow: hidden">
+  <div style="width: 100%; height: 100vh; overflow: hidden" :style="bg">
     <div style="width: 400px; margin: 150px auto">
       <div style="color: teal; font-size: 25px; text-align: center; padding: 25px">
         登 录
@@ -25,6 +25,10 @@
           </el-input>
         </el-form-item>
         <el-form-item>
+          <el-radio v-model="form.role" :label="1" style="color: #eee">管理员</el-radio>
+          <el-radio v-model="form.role" :label="2" style="color: #eee">普通用户</el-radio>
+        </el-form-item>
+        <el-form-item>
           <el-button style="width: 100%; font-weight: bold" type="primary" @click="login">登 录</el-button>
         </el-form-item>
       </el-form>
@@ -48,7 +52,7 @@ export default {
   },
   data() {
     return  {
-      form: {},
+      form: {role: 1},
       rules: {
         username: [
           {
@@ -64,6 +68,12 @@ export default {
             trigger: 'blur',
           },
         ],
+      },
+      // 加背景图片
+      bg: {
+        backgroundImage: "url(" + require("../assets/Naruto.jpg") + ")",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "100% 100%"
       }
     }
   },

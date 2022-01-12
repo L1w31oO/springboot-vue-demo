@@ -7,7 +7,7 @@
         :default-openeds="['1']"
         class="el-menu-vertical-demo"
     >
-      <el-sub-menu index="1">
+      <el-sub-menu index="1" v-if="user.role === 1">
         <template #title>
           <el-icon><setting /></el-icon>
           <span>系统管理</span>
@@ -44,6 +44,7 @@ import {
   Menu as IconMenu,
   Setting,
 } from '@element-plus/icons-vue'
+import request from "../utils/request";
 
 export default {
   name: "Aside",
@@ -53,8 +54,20 @@ export default {
   },
   data() {
     return {
+      user: {},
       path: this.$route.path  // 默认设置高亮的菜单
     }
+  },
+  created() {
+    let userStr = sessionStorage.getItem("user") || "{}"
+    this.user = JSON.parse(userStr)
+
+    // 请求服务端，确认当前登录用户的 合法信息
+    request.get("/user/" + this.user.id).then(res => {
+      if (res.code === '0') {
+        this.user = res.data
+      }
+    })
   }
 }
 </script>

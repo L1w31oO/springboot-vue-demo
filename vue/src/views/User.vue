@@ -3,8 +3,17 @@
     <!-- 功能区域 -->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="add">新增</el-button>
-      <el-button type="primary">导入</el-button>
-      <el-button type="primary">导出</el-button>
+      <el-upload
+          action="http://localhost:9090/user/import"
+          :on-success="handleUploadSuccess"
+          :show-file-list=false
+          :limit="1"
+          accept='.xlsx'
+          style="display: inline-block; margin: 0 10px"
+      >
+        <el-button type="primary">导入</el-button>
+      </el-upload>
+      <el-button type="primary" @click="exportUser">导出</el-button>
     </div>
     <!-- 搜索区域 -->
     <div style="margin: 10px 0">
@@ -12,6 +21,7 @@
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
     </div>
     <el-table
+        v-loading="loading"
         :data="tableData"
         border
         style="width: 100%"
@@ -24,6 +34,12 @@
       <el-table-column prop="age" label="年龄" sortable=""/>
       <el-table-column prop="sex" label="性别" sortable=""/>
       <el-table-column prop="address" label="地址" sortable=""/>
+      <el-table-column label="角色">
+        <template #default="scope">
+          <span v-if="scope.row.role === 1">管理员</span>
+          <span v-if="scope.row.role === 2">普通用户</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
           <el-button type="default" size="small" @click="handleEdit(scope.row)">编辑</el-button>
@@ -96,6 +112,7 @@ export default {
 
   data() {
     return {
+      loading: true,
       form: {},
       dialogVisible: false,
       search: '',
@@ -112,6 +129,19 @@ export default {
   },
 
   methods: {
+
+    handleUploadSuccess(res) {
+      if (res.code === "0") {
+        ElMessage({
+          type: "success",
+          message: "导入成功"
+        })
+        this.load()
+      }
+    },
+    exportUser() {
+      location.href = "http://" + window.server.filesUploadUrl + ":9090/user/export";
+    },
 
     // 点击新增打开弹窗的方法
     add() {
@@ -160,6 +190,7 @@ export default {
 
     // 加载数据的方法
     load() {
+      this.loading = true
       request.get("/user", {
         params: {
           pageNum: this.currentPage,
@@ -167,7 +198,8 @@ export default {
           search: this.search
         }
       }).then(res => {
-        console.log(res)
+        // console.log(res)
+        this.loading = false
         this.tableData = res.data.records
         this.total = res.data.total
       })

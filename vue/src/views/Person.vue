@@ -23,6 +23,9 @@
         <el-form-item label="地址">
           <el-input v-model="form.address"></el-input>
         </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="form.password"></el-input>
+        </el-form-item>
       </el-form>
       <div style="text-align: center">
         <el-button type="primary" @click="update">保 存</el-button>

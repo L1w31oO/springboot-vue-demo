@@ -12,6 +12,7 @@
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
     </div>
     <el-table
+        v-loading="loading"
         :data="tableData"
         border
         style="width: 100%"
@@ -98,6 +99,7 @@ export default {
 
   data() {
     return {
+      loading: true,
       form: {},
       dialogVisible: false,
       search: '',
@@ -139,7 +141,7 @@ export default {
           // 关联弹窗里的div, new一个editor对象
           editor = new E('#div1')
           // 配置 server 接口地址
-          editor.config.uploadImgServer = 'http://localhost:9090/files/editor/upload'
+          editor.config.uploadImgServer = 'http://' + window.server.filesUploadUrl + ':9090/files/editor/upload'
           editor.config.uploadFileName = "file"  // 设置上传参数名称（后台MultipartFile file）
           editor.create()
         }
@@ -196,6 +198,7 @@ export default {
 
     // 加载数据的方法
     load() {
+      this.loading = true
       request.get("/news", {
         params: {
           pageNum: this.currentPage,
@@ -203,7 +206,8 @@ export default {
           search: this.search
         }
       }).then(res => {
-        console.log(res)
+        // console.log(res)
+        this.loading = false
         this.tableData = res.data.records
         this.total = res.data.total
       })

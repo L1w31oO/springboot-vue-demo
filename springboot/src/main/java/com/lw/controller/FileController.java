@@ -46,7 +46,7 @@ public class FileController {
 
         // System.getProperty("user.dir")获取项目(springboot-vue-demo)所在的文件路径
         // 拼接上传路径
-        String rootFilePath = System.getProperty("user.dir") + "/springboot/src/main/resources/files/" + flag + "_" + originalFilename;
+        String rootFilePath = System.getProperty("user.dir") + "/src/main/resources/files/" + flag + "_" + originalFilename;
 
         // 文件写入到上传路径
         FileUtil.writeBytes(file.getBytes(), rootFilePath);
@@ -75,7 +75,7 @@ public class FileController {
 
         // System.getProperty("user.dir")获取项目(springboot-vue-demo)所在的文件路径
         // 拼接上传路径
-        String rootFilePath = System.getProperty("user.dir") + "/springboot/src/main/resources/files/" + flag + "_" + originalFilename;
+        String rootFilePath = System.getProperty("user.dir") + "/src/main/resources/files/" + flag + "_" + originalFilename;
 
         // 文件写入到上传路径
         FileUtil.writeBytes(file.getBytes(), rootFilePath);
@@ -105,7 +105,7 @@ public class FileController {
         // 新建一个输出流
         OutputStream os;
         // 定义文件上传的根路径
-        String basePath = System.getProperty("user.dir") + "/springboot/src/main/resources/files/";
+        String basePath = System.getProperty("user.dir") + "/src/main/resources/files/";
         // 获取所有文件名称
         List<String> listFileNames = FileUtil.listFileNames(basePath);
         // 找到和前端传入参数一致的文件

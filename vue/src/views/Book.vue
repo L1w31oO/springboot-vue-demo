@@ -2,7 +2,7 @@
   <div style="padding: 10px">
     <!-- 功能区域 -->
     <div style="margin: 10px 0">
-      <el-button type="primary" @click="add">新增</el-button>
+      <el-button type="primary" @click="add" v-if="user.role === 1">新增</el-button>
       <el-button type="primary">导入</el-button>
       <el-button type="primary">导出</el-button>
     </div>
@@ -12,6 +12,7 @@
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
     </div>
     <el-table
+        v-loading="loading"
         :data="tableData"
         border
         style="width: 100%"
@@ -35,8 +36,8 @@
 
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button type="default" size="small" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)">
+          <el-button type="default" size="small" @click="handleEdit(scope.row)" v-if="user.role === 1">编辑</el-button>
+          <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)" v-if="user.role === 1">
             <template #reference>
               <el-button type="danger" size="small">删除</el-button>
             </template>
@@ -78,7 +79,7 @@
         <el-form-item label="封面">
           <el-upload
               ref="upload"
-              action="http://localhost:9090/files/upload"
+              :action="filesUploadUrl"
               :on-success="filesUploadSuccess"
           >
             <el-button type="primary">点击上传</el-button>
@@ -116,11 +117,24 @@ export default {
       currentPage: 1,
       pageSize: 10,
       total: 100,
+      user: {},
+      loading: true,
+      filesUploadUrl: 'http://' + window.server.filesUploadUrl + ':9090/files/upload'
     }
   },
 
   // 页面一加载就调用
   created() {
+    let userStr = sessionStorage.getItem("user") || "{}"
+    this.user = JSON.parse(userStr)
+
+    // 请求服务端，确认当前登录用户的 合法信息
+    request.get("/user/" + this.user.id).then(res => {
+      if (res.code === '0') {
+        this.user = res.data
+      }
+    })
+
     this.load()
   },
 
@@ -180,6 +194,7 @@ export default {
 
     // 加载数据的方法
     load() {
+      this.loading = true
       request.get("/book", {
         params: {
           pageNum: this.currentPage,
@@ -187,7 +202,8 @@ export default {
           search: this.search
         }
       }).then(res => {
-        console.log(res)
+        // console.log(res)
+        this.loading = false
         this.tableData = res.data.records
         this.total = res.data.total
       })
