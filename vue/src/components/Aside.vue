@@ -34,6 +34,13 @@
         </template>
       </el-menu-item>
 
+      <el-menu-item index="/map">
+        <el-icon><icon-menu /></el-icon>
+        <template #title>
+          <span>百度地图</span>
+        </template>
+      </el-menu-item>
+
       <el-sub-menu index="1" v-if="user.role === 1">
         <template #title>
           <el-icon><setting /></el-icon>
