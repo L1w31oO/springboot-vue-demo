@@ -37,6 +37,7 @@
         <el-form-item>
           <el-button style="width: 100%; font-weight: bold" type="primary" @click="login">登 录</el-button>
         </el-form-item>
+        <el-form-item><el-button type="text" @click="register">前往注册 >> </el-button></el-form-item>
       </el-form>
 
     </div>
@@ -90,9 +91,13 @@ export default {
     sessionStorage.removeItem("user")
   },
   methods: {
-
+    // 接收验证码组件提交的 4位验证码
     createValidCode(data) {
       this.validCode = data
+    },
+
+    register() {
+      this.$router.push('/register')
     },
 
     login() {
@@ -135,13 +140,5 @@ export default {
 </script>
 
 <style scoped>
-.ValidCode{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-.ValidCode span{
-  display: inline-block;
-}
+
 </style>

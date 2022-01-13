@@ -111,7 +111,9 @@ public class UserController {
             wrapper.like(User::getNickName, search);
         }
         // 页面信息
-        Page<User> userPage = userMapper.selectPage(page, wrapper);
+//        Page<User> userPage = userMapper.selectPage(page, wrapper);
+//        Page<User> userPage = userMapper.findPage(new Page<>(pageNum, pageSize));
+        Page<User> userPage = userMapper.findPage(new Page<>(pageNum, pageSize), search);
         return Result.success(userPage);
     }
 
@@ -182,5 +184,13 @@ public class UserController {
             userMapper.insert(user);
         }
         return Result.success();
+    }
+    /**
+     * 统计数据
+     * @return
+     */
+    @GetMapping("/count")
+    public Result<?> count() {
+        return Result.success(userMapper.countAddress());
     }
 }

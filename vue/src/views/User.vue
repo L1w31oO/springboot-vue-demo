@@ -42,6 +42,7 @@
       </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
+          <el-button size="small" type="success" plain @click="showBooks(scope.row.bookList)">查看图书列表</el-button>
           <el-button type="default" size="small" @click="handleEdit(scope.row)">编辑</el-button>
           <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)">
             <template #reference>
@@ -63,6 +64,14 @@
       >
       </el-pagination>
     </div>
+
+    <el-dialog title="用户拥有的图书列表" v-model="bookVis" width="30%">
+      <el-table :data="bookList" stripe border>
+        <el-table-column prop="id" label="ID"></el-table-column>
+        <el-table-column prop="name" label="名称"></el-table-column>
+        <el-table-column prop="price" label="价格"></el-table-column>
+      </el-table>
+    </el-dialog>
 
     <el-dialog
         v-model="dialogVisible"
@@ -120,6 +129,8 @@ export default {
       currentPage: 1,
       pageSize: 10,
       total: 100,
+      bookVis: false,
+      bookList: []
     }
   },
 
@@ -129,6 +140,11 @@ export default {
   },
 
   methods: {
+
+    showBooks(books) {
+      this.bookList = books
+      this.bookVis = true
+    },
 
     handleUploadSuccess(res) {
       if (res.code === "0") {

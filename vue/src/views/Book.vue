@@ -6,9 +6,10 @@
       <el-popconfirm
           title="确定删除吗？"
           @confirm="deleteBatch"
+          v-if="user.role === 1"
       >
         <template #reference>
-          <el-button type="danger" v-if="user.role === 1">批量删除</el-button>
+          <el-button type="danger">批量删除</el-button>
         </template>
       </el-popconfirm>
     </div>
@@ -174,7 +175,7 @@ export default {
     },
 
     handleSelectionChange(val) {
-      this.ids = val.map(v => v.id)
+      this.ids = val.map(v => v.id)  // [{id,name}, {id,name}] => [id,id]
     },
 
     filesUploadSuccess(res) {

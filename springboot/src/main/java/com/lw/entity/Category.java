@@ -1,5 +1,6 @@
 package com.lw.entity;
 
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -10,21 +11,17 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@TableName("user")
+@TableName("category")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    @TableId(value = "id", type = IdType.AUTO)
+public class Category {
+
+    @TableId(type = IdType.AUTO)
     private Integer id;
-    private String username;
-    private String password;
-    private String nickName;
-    private Integer age;
-    private String sex;
-    private String address;
-    private Integer role;
+    private String name;
+    private Integer pid;
 
     @TableField(exist = false)
-    private List<Book> bookList;
+    private List<Category> children;
 }

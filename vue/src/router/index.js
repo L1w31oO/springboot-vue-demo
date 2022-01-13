@@ -6,8 +6,13 @@ const routes = [
     path: '/',
     name: 'Layout',
     component: Layout,
-    redirect: '/user',
+    redirect: '/home',
     children: [
+      {
+        path: 'home',
+        name: 'Home',
+        component: () => import("../views/Home"),
+      },
       {
         path: 'user',
         name: 'User',
@@ -27,6 +32,11 @@ const routes = [
         path: 'news',
         name: 'News',
         component: () => import("../views/News")
+      },
+      {
+        path: 'category',
+        name: 'Category',
+        component: () => import("../views/Category"),
       },
     ]
   },

@@ -10,8 +10,11 @@ import './assets/css/global.css'
 
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
+import * as echarts from 'echarts'
+
 createApp(App)
     .use(store)
     .use(router)
     .use(ElementPlus, {locale: zhCn, size: 'small'})
     .mount('#app')
+    .echarts = echarts

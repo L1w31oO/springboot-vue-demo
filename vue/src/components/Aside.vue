@@ -5,20 +5,20 @@
         :default-active="path"
         router
         :default-openeds="['1']"
-        class="el-menu-vertical-demo"
     >
-      <el-sub-menu index="1" v-if="user.role === 1">
+      <el-menu-item index="/home">
+        <el-icon><icon-menu /></el-icon>
         <template #title>
-          <el-icon><setting /></el-icon>
-          <span>系统管理</span>
+          <span>主页</span>
         </template>
-        <el-menu-item index="/user">
-          <el-icon><icon-menu /></el-icon>
-          <template #title>
-            <span>用户管理</span>
-          </template>
-        </el-menu-item>
-      </el-sub-menu>
+      </el-menu-item>
+
+      <el-menu-item index="/category">
+        <el-icon><icon-menu /></el-icon>
+        <template #title>
+          <span>分类管理</span>
+        </template>
+      </el-menu-item>
 
       <el-menu-item index="/book">
         <el-icon><icon-menu /></el-icon>
@@ -33,6 +33,22 @@
           <span>新闻管理</span>
         </template>
       </el-menu-item>
+
+      <el-sub-menu index="1" v-if="user.role === 1">
+        <template #title>
+          <el-icon><setting /></el-icon>
+          <span>系统管理</span>
+        </template>
+        <el-menu-item index="/user">
+          <el-icon><icon-menu /></el-icon>
+          <template #title>
+            <span>用户管理</span>
+          </template>
+        </el-menu-item>
+      </el-sub-menu>
+
+
+
 
     </el-menu>
   </div>
