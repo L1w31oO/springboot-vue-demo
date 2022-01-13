@@ -181,6 +181,8 @@ export default {
               message: res.msg
             })
           }
+          // 触发Layout更新Header的用户信息
+          this.$emit("userInfo")
           this.load()  // 刷新表格数据
           this.dialogVisible = false  // 关闭弹窗
         })

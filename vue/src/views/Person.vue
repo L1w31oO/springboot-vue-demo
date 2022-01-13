@@ -85,7 +85,7 @@ export default {
             message: "个人信息更新成功"
           })
           sessionStorage.setItem("user", JSON.stringify(this.form))
-          // 触发Layout更新用户信息
+          // 触发Layout更新Header的用户信息
           this.$emit("userInfo")
         } else {
           ElMessage({

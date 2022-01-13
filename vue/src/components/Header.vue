@@ -28,17 +28,15 @@ import {ArrowDown} from "@element-plus/icons-vue";
 
 export default {
   name: "Header",
+  props: ['user'],
   components: {
     ArrowDown
   },
   data() {
-    return {
-      user: {}
-    }
+
   },
   created() {
-    let str = sessionStorage.getItem("user") || "{}"
-    this.user = JSON.parse(str)
+
   },
   methods: {
     person() {
