@@ -24,6 +24,7 @@ public class User {
     private String sex;
     private String address;
     private Integer role;
+    private String avatar;
 
     @TableField(exist = false)
     private List<Book> bookList;

@@ -17,6 +17,13 @@
             </template>
           </el-input>
         </el-form-item>
+        <el-form-item prop="nickName">
+          <el-input v-model="form.nickName" placeholder="请输入昵称...">
+            <template #prefix>
+              <el-icon class="el-input__icon"><user /></el-icon>
+            </template>
+          </el-input>
+        </el-form-item>
         <el-form-item prop="password">
           <el-input v-model="form.password" placeholder="请输入密码..." show-password>
             <template #prefix>
@@ -31,8 +38,46 @@
             </template>
           </el-input>
         </el-form-item>
+
+        <el-form-item prop="sex">
+          <el-radio v-model="form.sex" label="男">男</el-radio>
+          <el-radio v-model="form.sex" label="女">女</el-radio>
+          <el-radio v-model="form.sex" label="未知">未知</el-radio>
+        </el-form-item>
+
+        <el-form-item prop="age">
+          <el-input v-model="form.age" placeholder="请输入你的年龄...">
+            <template #prefix>
+              <el-icon class="el-input__icon"><user /></el-icon>
+            </template>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item prop="address">
+          <el-input v-model="form.address" placeholder="请输入你的地址...">
+            <template #prefix>
+              <el-icon class="el-input__icon"><user /></el-icon>
+            </template>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item prop="avatar" label="上传头像">
+          <el-upload
+              class="avatar-uploader"
+              action="http://localhost:9090/files/upload"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+          >
+            <img v-if="form.avatar" :src="form.avatar" class="avatar" style="height: 120px; width: 120px">
+            <i v-else ><el-icon><upload /></el-icon></i>
+          </el-upload>
+        </el-form-item>
+
         <el-form-item>
           <el-button style="width: 100%; font-weight: bold" type="primary" @click="register">注 册</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="text" @click="login">前往登录 >> </el-button>
         </el-form-item>
       </el-form>
 
@@ -43,8 +88,8 @@
 
 
 <script>
-import { User, Lock, CircleCheck } from '@element-plus/icons-vue'
-import {ElMessage} from "element-plus";
+import {User, Lock, CircleCheck, Upload} from '@element-plus/icons-vue'
+import { ElMessage } from "element-plus";
 import request from "../utils/request";
 
 export default {
@@ -53,6 +98,7 @@ export default {
     User,
     Lock,
     CircleCheck,
+    Upload
   },
   data() {
     return  {
@@ -62,6 +108,13 @@ export default {
           {
             required: true,
             message: '请输入用户名',
+            trigger: 'blur',
+          },
+        ],
+        nickName: [
+          {
+            required: true,
+            message: '请输入昵称',
             trigger: 'blur',
           },
         ],
@@ -79,10 +132,42 @@ export default {
             trigger: 'blur',
           },
         ],
+        age: [
+          {
+            required: true,
+            message: '请输入年龄',
+            trigger: 'blur',
+          },
+        ],
+        sex: [
+          {
+            required: true,
+            message: '请输入性别',
+            trigger: 'blur',
+          },
+        ],
+        address: [
+          {
+            required: true,
+            message: '请输入地址',
+            trigger: 'blur',
+          },
+        ],
       }
     }
   },
   methods: {
+    handleAvatarSuccess(res) {
+      this.form.avatar = res.data
+      ElMessage({
+        type: "success",
+        message: "上传成功"
+      })
+      // this.update()
+    },
+    login() {
+      this.$router.push('/login')
+    },
     register() {
 
       if (this.form.password !== this.form.confirm) {

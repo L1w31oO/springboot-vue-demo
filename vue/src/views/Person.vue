@@ -5,6 +5,7 @@
           ref="form"
           :model="form"
       >
+
         <el-form-item label="用户名">
           <el-input v-model="form.username" disabled></el-input>
         </el-form-item>
@@ -14,6 +15,19 @@
         <el-form-item label="昵称">
           <el-input v-model="form.nickName"></el-input>
         </el-form-item>
+
+        <el-form-item label="头像">
+          <el-upload
+              class="avatar-uploader"
+              action="http://localhost:9090/files/upload"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+          >
+            <img v-if="form.avatar" :src="form.avatar" class="avatar">
+            <i v-else ><el-icon><upload /></el-icon></i>
+          </el-upload>
+        </el-form-item>
+
         <el-form-item label="年龄">
           <el-input v-model="form.age"></el-input>
         </el-form-item>
@@ -37,9 +51,13 @@
 <script>
 import request from "../utils/request";
 import {ElMessage} from "element-plus";
+import { Upload } from '@element-plus/icons-vue'
 
 export default {
   name: "Person",
+  components: {
+    Upload
+  },
   data() {
     return {
       form: {}
@@ -50,6 +68,14 @@ export default {
     this.form = JSON.parse(str)
   },
   methods: {
+    handleAvatarSuccess(res) {
+      this.form.avatar = res.data
+      ElMessage({
+        type: "success",
+        message: "上传成功"
+      })
+      // this.update()
+    },
     update() {
       request.put("/user", this.form).then(res => {
         console.log(res)
@@ -74,5 +100,27 @@ export default {
 </script>
 
 <style scoped>
-
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 120px;
+  height: 120px;
+  line-height: 120px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 </style>

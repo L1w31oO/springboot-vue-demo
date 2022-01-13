@@ -13,10 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class BaseController {
 
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
-    @Autowired
+    @Resource
     private HttpServletRequest request;
 
     /**

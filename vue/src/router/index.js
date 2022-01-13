@@ -43,6 +43,11 @@ const routes = [
         name: 'Map',
         component: () => import("../views/Map"),
       },
+      {
+        path: 'im',
+        name: 'Im',
+        component: () => import("../views/Im"),
+      }
     ]
   },
   {

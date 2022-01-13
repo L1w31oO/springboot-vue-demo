@@ -1,6 +1,7 @@
 package com.lw.exception;
 
 public class CustomException extends RuntimeException {
+
     private String code;
     private String msg;
 
