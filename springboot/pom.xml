@@ -63,11 +63,18 @@
             <version>5.7.19</version>
         </dependency>
 
-        <!--		excel导出依赖-->
+        <!-- excel导出依赖 -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>4.1.2</version>
+        </dependency>
+
+        <!-- 阿里云OSS -->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>3.10.2</version>
         </dependency>
 
     </dependencies>

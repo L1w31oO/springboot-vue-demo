@@ -8,14 +8,22 @@ spring:
     username: root
     password: 738258
     type: com.alibaba.druid.pool.DruidDataSource
-#  servlet:
-#    multipart:
-#      max-file-size: 100MB
-#      max-request-size: 100MB
-#
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+aliyun:
+  oss:
+    endpoint: oss-cn-shanghai.aliyuncs.com
+    bucket-name: admin-mall
+    access-key-id:
+    access-key-secret:
+
 #mybatis:
 #  type-aliases-package: com.lw.pojo
 #  mapper-locations: classpath:mapper/*.xml
