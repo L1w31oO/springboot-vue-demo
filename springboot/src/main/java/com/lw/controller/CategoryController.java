@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/category")
-public class CategoryController {
+public class CategoryController extends BaseController {
 
     @Resource
     CategoryMapper CategoryMapper;

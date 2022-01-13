@@ -18,7 +18,7 @@ request.interceptors.request.use(config => {
     // 取出sessionStorage里面缓存的用户信息
     let userJson = sessionStorage.getItem("user")
     if (!whiteUrls.includes(config.url)) {  // 校验请求白名单
-        if(!userJson) {
+        if (!userJson) {
             router.push("/login")
         }
         else {
@@ -43,6 +43,11 @@ request.interceptors.response.use(
         // 兼容服务端返回的字符串数据
         if (typeof res === 'string') {
             res = res ? JSON.parse(res) : res
+        }
+        // 验证token
+        if (res.code === '401') {
+            console.error("token过期，重新登录")
+            router.push("/login")
         }
         return res;
     },

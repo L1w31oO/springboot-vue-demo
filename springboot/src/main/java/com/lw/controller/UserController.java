@@ -6,12 +6,14 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lw.common.Result;
 import com.lw.entity.User;
 import com.lw.mapper.UserMapper;
 
+import com.lw.utils.TokenUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +31,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController {
 
     @Resource
     private UserMapper userMapper;
@@ -42,18 +44,25 @@ public class UserController {
         // 前端登录传来的用户密码
         String currentPassword = user.getPassword();
         // 前端登录传来的用户权限
-        Integer role = user.getRole();
+        Integer currentRole = user.getRole();
 
         // 与数据库中的用户数据对比
-        LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery()
-                .eq(User::getUsername, currentUsername)
-                .eq(User::getPassword, currentPassword)
-                .eq(User::getRole, role);
-        User selectUser = userMapper.selectOne(wrapper);
-        if (selectUser == null) {
+//        LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery()
+//                .eq(User::getUsername, currentUsername)
+//                .eq(User::getPassword, currentPassword)
+//                .eq(User::getRole, role);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", currentUsername);
+        queryWrapper.eq("password", currentPassword);
+        queryWrapper.eq("role", currentRole);
+        User selectedUser = userMapper.selectOne(queryWrapper);
+        if (selectedUser == null) {
             return Result.error("-1", "用户名或密码错误！");
         }
-        return Result.success(selectUser);
+        // 生成token
+        String token = TokenUtils.genToken(selectedUser);
+        selectedUser.setToken(token);
+        return Result.success(selectedUser);
     }
 
     @PostMapping("/register")
