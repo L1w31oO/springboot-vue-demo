@@ -25,6 +25,12 @@
           </el-input>
         </el-form-item>
         <el-form-item>
+          <div style="display: flex">
+            <el-input prefix-icon="el-icon-key" v-model="form.validCode" style="width: 50%;" placeholder="请输入验证码"></el-input>
+            <ValidCode @input="createValidCode" />
+          </div>
+        </el-form-item>
+        <el-form-item>
           <el-radio v-model="form.role" :label="1" style="color: #eee">管理员</el-radio>
           <el-radio v-model="form.role" :label="2" style="color: #eee">普通用户</el-radio>
         </el-form-item>
@@ -43,12 +49,14 @@
 import { User, Lock } from '@element-plus/icons-vue'
 import {ElMessage} from "element-plus";
 import request from "../utils/request";
+import ValidCode from "../components/ValidCode";
 
 export default {
   name: "Login",
   components: {
     User,
-    Lock
+    Lock,
+    ValidCode
   },
   data() {
     return  {
@@ -69,21 +77,41 @@ export default {
           },
         ],
       },
+      validCode: '',
       // 加背景图片
-      bg: {
-        backgroundImage: "url(" + require("../assets/Naruto.jpg") + ")",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 100%"
-      }
+      // bg: {
+      //   backgroundImage: "url(" + require("../assets/Naruto.jpg") + ")",
+      //   backgroundRepeat: "no-repeat",
+      //   backgroundSize: "100% 100%"
+      // }
     }
   },
   created() {
     sessionStorage.removeItem("user")
   },
   methods: {
+
+    createValidCode(data) {
+      this.validCode = data
+    },
+
     login() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
+          if (!this.form.validCode) {
+            ElMessage({
+              type: "error",
+              message: "请填写验证码"
+            })
+            return
+          }
+          if(this.form.validCode.toLowerCase() !== this.validCode.toLowerCase()) {
+            ElMessage({
+              type: "error",
+              message: "验证码错误"
+            })
+            return
+          }
           request.post("/user/login", this.form).then(res => {
             if (res.code === '0') {
               ElMessage({
@@ -107,5 +135,13 @@ export default {
 </script>
 
 <style scoped>
-
+.ValidCode{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.ValidCode span{
+  display: inline-block;
+}
 </style>
