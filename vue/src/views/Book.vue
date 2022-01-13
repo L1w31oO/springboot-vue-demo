@@ -3,8 +3,14 @@
     <!-- 功能区域 -->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="add" v-if="user.role === 1">新增</el-button>
-      <el-button type="primary">导入</el-button>
-      <el-button type="primary">导出</el-button>
+      <el-popconfirm
+          title="确定删除吗？"
+          @confirm="deleteBatch"
+      >
+        <template #reference>
+          <el-button type="danger" v-if="user.role === 1">批量删除</el-button>
+        </template>
+      </el-popconfirm>
     </div>
     <!-- 搜索区域 -->
     <div style="margin: 10px 0">
@@ -17,7 +23,9 @@
         border
         style="width: 100%"
         stripe
+        @selection-change="handleSelectionChange"
     >
+      <el-table-column type="selection" width="55"/>
       <el-table-column prop="id" label="ID" sortable=""/>
       <el-table-column prop="name" label="书名" sortable=""/>
       <el-table-column prop="price" label="价格" sortable=""/>
@@ -119,7 +127,8 @@ export default {
       total: 100,
       user: {},
       loading: true,
-      filesUploadUrl: 'http://' + window.server.filesUploadUrl + ':9090/files/upload'
+      filesUploadUrl: 'http://' + window.server.filesUploadUrl + ':9090/files/upload',
+      ids: []
     }
   },
 
@@ -139,6 +148,34 @@ export default {
   },
 
   methods: {
+
+    deleteBatch() {
+      if (!this.ids.length) {
+        ElMessage({
+          type: "warning",
+          message: "请选择数据！"
+        })
+        return
+      }
+      request.post("/book/deleteBatch", this.ids).then(res => {
+        if (res.code === '0') {
+          ElMessage({
+            type: "success",
+            message: "批量删除成功"
+          })
+          this.load()
+        } else {
+          ElMessage({
+            type: "error",
+            message: res.msg
+          })
+        }
+      })
+    },
+
+    handleSelectionChange(val) {
+      this.ids = val.map(v => v.id)
+    },
 
     filesUploadSuccess(res) {
       console.log(res)

@@ -17,12 +17,12 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-aliyun:
-  oss:
-    endpoint: oss-cn-shanghai.aliyuncs.com
-    bucket-name: admin-mall
-    access-key-id:
-    access-key-secret:
+#aliyun:
+#  oss:
+#    endpoint: oss-cn-shanghai.aliyuncs.com
+#    bucket-name: admin-mall
+#    access-key-id:
+#    access-key-secret:
 
 #mybatis:
 #  type-aliases-package: com.lw.pojo
