@@ -33,7 +33,9 @@ export default {
     ArrowDown
   },
   data() {
+    return {
 
+    }
   },
   created() {
 

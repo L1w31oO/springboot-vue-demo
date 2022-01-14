@@ -26,7 +26,8 @@ public class FileController extends BaseController {
     @Value("${server.port}")
     private String port;
 
-    private static final String ip = "http://localhost";
+    @Value("${file.ip}")
+    private String ip;
 
     /**
      * 文件上传接口
@@ -83,7 +84,7 @@ public class FileController extends BaseController {
         FileUtil.writeBytes(file.getBytes(), rootFilePath);
 
         // 返回结果url
-        String url = ip + ":" + port + "/files/" + flag;
+        String url = "http://" +  ip + ":" + port + "/files/" + flag;
 
         // 定义富文本编辑器wangEditor返回的json数据格式
         JSONObject json = new JSONObject();
